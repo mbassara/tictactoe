@@ -1,5 +1,5 @@
 
-default: build server_jar client_jar game_jar
+default: build server_jar client_jar game_jar remotes_jar
 
 build:
 	ant
@@ -13,6 +13,9 @@ client_jar: build
 game_jar: build
 	ant -f game.xml
 	chmod +x jar/game.jar
+
+remotes_jar: build
+	ant -f remotes.xml
 
 clean:
 	rm -rf bin/ jar/

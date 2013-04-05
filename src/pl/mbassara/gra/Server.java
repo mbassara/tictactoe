@@ -1,6 +1,7 @@
 package pl.mbassara.gra;
 
 import java.rmi.Naming;
+import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 
 import pl.mbassara.gra.remotes.BotPlayer;
@@ -11,22 +12,18 @@ import pl.mbassara.gra.remotes.ServerImpl;
 public class Server {
 
 	public static void main(String[] args) {
-		if (args.length < 4) {
-			System.out
-					.println("\nUsage: Server codebase hostname reg.ip reg.port\n");
+		if (args.length < 2) {
+			System.out.println("\nUsage: Server hostname port\n");
 			return;
 		}
 
 		try {
-			// LocateRegistry.createRegistry(Integer.valueOf(args[3]));
-			System.setProperty("java.rmi.server.codebase", "file:" + args[0]);
-			System.setProperty("java.rmi.server.hostname", args[1]);
+			LocateRegistry.createRegistry(Integer.valueOf(args[1]));
+			System.setProperty("java.rmi.server.hostname", args[0]);
 			ServerImpl server = new ServerImpl();
 			IServer remServer = (IServer) UnicastRemoteObject.exportObject(
 					server, 0);
-			Naming.rebind("rmi://" + args[2] + ":" + args[3] + "/game",
-					remServer);
-
+			Naming.rebind("rmi://localhost:" + args[1] + "/game", remServer);
 			int boardSize = 3;
 			server.registerPlayer(new BotPlayer(boardSize));
 

@@ -30,6 +30,7 @@ public class Client {
 	private final Semaphore semaphore = new Semaphore(0);
 	private boolean isGameEnded = false;
 	private IPlayer gameWinner = null;
+	private int boardSize = 3;
 
 	private boolean connect(String nick, String ip, String port) {
 		try {
@@ -64,7 +65,7 @@ public class Client {
 				System.out
 						.print("\nThere are "
 								+ registeredPlayers.size()
-								+ " registered players. Type 0 to register or 1 to choose one of registered players to play.\nanswer: ");
+								+ " registered players. Type:\n\t0 to register\n\t1 to choose one of registered players to play.\nanswer: ");
 
 				try {
 					answer = Integer.parseInt(in.readLine());
@@ -120,7 +121,7 @@ public class Client {
 		try {
 
 			int x, y;
-			final Board board = new Board(3);
+			final Board board = new Board(boardSize);
 
 			player.addShotReceivedListener(new IShotReceivedListener() {
 				@Override
@@ -158,13 +159,32 @@ public class Client {
 
 			System.out.println("\nLet's start!!!\n");
 			do {
+				x = -1;
+				y = -1;
 				try {
-					System.out.print("Enter X: ");
-					x = Integer.parseInt(in.readLine());
-					System.out.print("Enter Y: ");
-					y = Integer.parseInt(in.readLine());
+					while (x < 0 || x >= boardSize) {
+						System.out.print("Enter X: ");
+						try {
+							x = Integer.parseInt(in.readLine());
+						} catch (NumberFormatException e) {
+							x = -1;
+						}
+					}
+					while (y < 0 || y >= boardSize) {
+						System.out.print("Enter Y: ");
+						try {
+							y = Integer.parseInt(in.readLine());
+						} catch (NumberFormatException e) {
+							y = -1;
+						}
+					}
 				} catch (IOException e) {
 					break;
+				}
+
+				if (board.getField(x, y).getState() != FieldState.Empty) {
+					System.out.println("\nThis field has been already shot\n");
+					continue;
 				}
 
 				Shot shot = new Shot(playerType, new Point(x, y));
@@ -202,7 +222,7 @@ public class Client {
 			return;
 		}
 		System.setProperty("java.rmi.server.codebase", "file:"
-				+ Server.class.getProtectionDomain().getCodeSource()
+				+ Client.class.getProtectionDomain().getCodeSource()
 						.getLocation().getPath());
 		System.setProperty("java.rmi.server.hostname", args[3]);
 

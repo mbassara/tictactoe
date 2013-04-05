@@ -8,8 +8,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.concurrent.Semaphore;
@@ -82,8 +80,7 @@ public class MainWindow extends JFrame implements ActionListener,
 		add(northPane, BorderLayout.NORTH);
 
 		northPane.add(new JLabel("Server addr: "), BorderLayout.WEST);
-		String addr = "192.168.1.135:4321";
-		addr = "62.212.76.142:4321";
+		String addr = "address:port";
 		ipTextField = new JTextField(addr);
 		northPane.add(ipTextField, BorderLayout.CENTER);
 
@@ -106,13 +103,7 @@ public class MainWindow extends JFrame implements ActionListener,
 		northNorthPane.add(nickTextField);
 
 		northNorthPane.add(new JLabel("Your IP: "));
-		String ip = "";
-		try {
-			ip = InetAddress.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		// ip = "195.234.21.203";
+		String ip = "address";
 		hostnameTextField = new JTextField(ip);
 		hostnameTextField.setPreferredSize(new Dimension(145, hostnameTextField
 				.getPreferredSize().height));
@@ -322,11 +313,6 @@ public class MainWindow extends JFrame implements ActionListener,
 	}
 
 	public static void main(String[] args) {
-		// BotPlayer bot = new BotPlayer(3);
-		// bot.startGame();
-		// Shot shot = bot.getShot();
-		// System.out.println("type: " + shot.getType() + "\tpoint: "
-		// + shot.getCoord());
 		System.setProperty("java.rmi.server.codebase", "file:"
 				+ MainWindow.class.getProtectionDomain().getCodeSource()
 						.getLocation().getPath());
