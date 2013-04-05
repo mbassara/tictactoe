@@ -27,7 +27,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import pl.mbassara.gra.Server;
 import pl.mbassara.gra.gui.PlayersTableMouseAdapter.IPlayersTableListener;
 import pl.mbassara.gra.model.Board;
 import pl.mbassara.gra.model.Field;
@@ -66,7 +65,7 @@ public class MainWindow extends JFrame implements ActionListener,
 		setLayout(new BorderLayout(10, 10));
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setResizable(false);
-		setPreferredSize(new Dimension(340, 450));
+		setPreferredSize(new Dimension(350, 450));
 		addWindowListener(new WindowClosingHandler());
 		setTitle("Tic Tac Toe");
 
@@ -329,7 +328,7 @@ public class MainWindow extends JFrame implements ActionListener,
 		// System.out.println("type: " + shot.getType() + "\tpoint: "
 		// + shot.getCoord());
 		System.setProperty("java.rmi.server.codebase", "file:"
-				+ Server.class.getProtectionDomain().getCodeSource()
+				+ MainWindow.class.getProtectionDomain().getCodeSource()
 						.getLocation().getPath());
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

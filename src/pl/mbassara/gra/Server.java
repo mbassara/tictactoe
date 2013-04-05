@@ -13,23 +13,21 @@ public class Server {
 	public static void main(String[] args) {
 		if (args.length < 4) {
 			System.out
-					.println("\nUsage: java Server hostname reg.ip reg.port boardsize\n");
+					.println("\nUsage: Server codebase hostname reg.ip reg.port\n");
 			return;
 		}
 
 		try {
-			// LocateRegistry.createRegistry(Integer.valueOf(args[2]));
-			System.setProperty("java.rmi.server.codebase", "file:"
-					+ Server.class.getProtectionDomain().getCodeSource()
-							.getLocation().getPath());
-			System.setProperty("java.rmi.server.hostname", args[0]);
+			// LocateRegistry.createRegistry(Integer.valueOf(args[3]));
+			System.setProperty("java.rmi.server.codebase", "file:" + args[0]);
+			System.setProperty("java.rmi.server.hostname", args[1]);
 			ServerImpl server = new ServerImpl();
 			IServer remServer = (IServer) UnicastRemoteObject.exportObject(
 					server, 0);
-			Naming.rebind("rmi://" + args[1] + ":" + args[2] + "/game",
+			Naming.rebind("rmi://" + args[2] + ":" + args[3] + "/game",
 					remServer);
 
-			int boardSize = Integer.parseInt(args[3]);
+			int boardSize = 3;
 			server.registerPlayer(new BotPlayer(boardSize));
 
 			while (true) {
